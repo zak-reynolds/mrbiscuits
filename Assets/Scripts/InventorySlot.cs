@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InventorySlot : MonoBehaviour {
 
-    public enum ItemType { Water = 0, Grass, Chicken, Egg, Carrot, None }
+    public enum ItemType { Water = 0, Grass, Chicken, Egg, Carrot, MrBiscuits, WaterSpawner, GrassSpawner, CarrotSpawner, None }
 
     [Header("Config")]
     public Vector3 propOffset;
@@ -49,6 +49,18 @@ public class InventorySlot : MonoBehaviour {
             case "Carrot":
                 selectedInteractable = ItemType.Carrot;
                 break;
+            case "MrBiscuits":
+                selectedInteractable = ItemType.MrBiscuits;
+                break;
+            case "WaterSpawner":
+                selectedInteractable = ItemType.WaterSpawner;
+                break;
+            case "GrassSpawner":
+                selectedInteractable = ItemType.GrassSpawner;
+                break;
+            case "CarrotSpawner":
+                selectedInteractable = ItemType.CarrotSpawner;
+                break;
         }
         selectedInteractableTransform = t;
     }
@@ -68,9 +80,12 @@ public class InventorySlot : MonoBehaviour {
                     case ItemType.None:
                         break;
                     case ItemType.Water:
+                        SetSelectedItem(selectedInteractable);
+                        break;
                     case ItemType.Grass:
                     case ItemType.Egg:
                     case ItemType.Carrot:
+                    case ItemType.Chicken:
                         SetSelectedItem(selectedInteractable);
                         Utility.PhysicalDestroy(selectedInteractableTransform.parent.gameObject);
                         break;
@@ -79,7 +94,19 @@ public class InventorySlot : MonoBehaviour {
             // Feed
             else
             {
-
+                switch (selectedInteractable)
+                {
+                    case ItemType.None:
+                    case ItemType.WaterSpawner:
+                        break;
+                    case ItemType.GrassSpawner:
+                    case ItemType.CarrotSpawner:
+                    case ItemType.Chicken:
+                    case ItemType.MrBiscuits:
+                        selectedInteractableTransform.parent.SendMessage("OnFedItem", selectedInteractable, SendMessageOptions.DontRequireReceiver);
+                        SetSelectedItem(ItemType.None);
+                        break;
+                }
             }
         }
 	}

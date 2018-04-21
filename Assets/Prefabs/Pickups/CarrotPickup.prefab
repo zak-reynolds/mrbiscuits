@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 4806755847528896}
   m_Layer: 0
   m_Name: CarrotPickup
-  m_TagString: Untagged
+  m_TagString: Carrot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

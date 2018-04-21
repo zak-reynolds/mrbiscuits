@@ -19,9 +19,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4201076024220160}
+  - component: {fileID: 114277549526186932}
   m_Layer: 0
   m_Name: WaterSpawner
-  m_TagString: Untagged
+  m_TagString: WaterSpawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,6 +113,22 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1476318571137326}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114277549526186932
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1286924698156656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261f4e33467d4e544a5c41784959c1b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1772855676469100, guid: bec83fbf47f3ae246a2f9769a8f384c8, type: 2}
+  spawnDistance: 2
+  charge: 1
+  decayTime: 100000000
+  spawnRate: 1
 --- !u!135 &135278846272585058
 SphereCollider:
   m_ObjectHideFlags: 1
