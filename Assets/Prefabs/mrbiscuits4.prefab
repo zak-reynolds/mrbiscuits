@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 23884569930145206}
   m_Layer: 9
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: MrBiscuits4
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -353,10 +353,10 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1931835369601932}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.7
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &135454112919363872
 SphereCollider:

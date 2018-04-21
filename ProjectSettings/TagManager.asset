@@ -18,6 +18,7 @@ TagManager:
   - MrBiscuits4
   - BatSpawner
   - Bat
+  - EscapePoint
   layers:
   - Default
   - TransparentFX
