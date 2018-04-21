@@ -13,6 +13,11 @@ TagManager:
   - WaterSpawner
   - GrassSpawner
   - CarrotSpawner
+  - MrBiscuits2
+  - MrBiscuits3
+  - MrBiscuits4
+  - BatSpawner
+  - Bat
   layers:
   - Default
   - TransparentFX
@@ -24,7 +29,7 @@ TagManager:
   - 
   - PlayerReach
   - Interactable
-  - 
+  - BatReach
   - 
   - 
   - 

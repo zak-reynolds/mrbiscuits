@@ -1,12 +1,12 @@
 ﻿using Assets;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawner : MonoBehaviour, IHaveCharge {
-
+public class BatSpawner : MonoBehaviour, IHaveCharge
+{
     public GameObject prefab;
     public float spawnDistance = 2;
-    public bool continuous = false;
 
     public float Charge { get { return charge; } }
     public float decayTime = 3;
@@ -17,38 +17,31 @@ public class Spawner : MonoBehaviour, IHaveCharge {
 
     private IEnumerator Spawn()
     {
-        bool spawned = false;
-        while (!spawned || continuous)
+        while (true)
         {
-            spawned = true;
             yield return new WaitForSeconds(spawnRate);
-            if (!continuous || charge > 0)
+            if (charge == 0)
             {
                 var offset = Quaternion.AngleAxis(rotation, Vector3.up) * transform.forward * spawnDistance;
                 rotation += 100;
-                Instantiate(prefab, transform.position + offset, Quaternion.identity);
+                var bat = Instantiate(prefab, transform.position + offset, Quaternion.identity);
+                bat.GetComponent<BatController>().parentSpawner = this;
             }
         }
     }
 
     void Start()
     {
-        if (continuous)
-        {
-            StartCoroutine(Spawn());
-        }
+        StartCoroutine(Spawn());
     }
 
-	void Update () {
+    void Update()
+    {
         charge = Mathf.Max(0, charge - (Time.deltaTime / decayTime));
-	}
+    }
 
     void OnFedItem(InventorySlot.ItemType type)
     {
         charge = 1;
-        if (!continuous)
-        {
-            StartCoroutine(Spawn());
-        }
     }
 }

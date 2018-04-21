@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InventorySlot : MonoBehaviour {
 
-    public enum ItemType { Water = 0, Grass, Chicken, Egg, Carrot, MrBiscuits, WaterSpawner, GrassSpawner, CarrotSpawner, None }
+    public enum ItemType { None = -1, Water = 0, Grass, Chicken, Egg, Carrot, MrBiscuits, WaterSpawner, GrassSpawner, CarrotSpawner, MrBiscuits2, MrBiscuits3, MrBiscuits4, BatSpawner }
 
     [Header("Config")]
     public Vector3 propOffset;
@@ -61,6 +61,18 @@ public class InventorySlot : MonoBehaviour {
             case "CarrotSpawner":
                 selectedInteractable = ItemType.CarrotSpawner;
                 break;
+            case "MrBiscuits2":
+                selectedInteractable = ItemType.MrBiscuits2;
+                break;
+            case "MrBiscuits3":
+                selectedInteractable = ItemType.MrBiscuits3;
+                break;
+            case "MrBiscuits4":
+                selectedInteractable = ItemType.MrBiscuits4;
+                break;
+            case "BatSpawner":
+                selectedInteractable = ItemType.BatSpawner;
+                break;
         }
         selectedInteractableTransform = t;
     }
@@ -97,13 +109,25 @@ public class InventorySlot : MonoBehaviour {
                 switch (selectedInteractable)
                 {
                     case ItemType.None:
+                        // Eat
+                        Utility.SendMessageToChildren(transform.parent, "OnFedItem", selectedItem, SendMessageOptions.DontRequireReceiver);
+                        SetSelectedItem(ItemType.None);
+                        break;
                     case ItemType.WaterSpawner:
                         break;
                     case ItemType.GrassSpawner:
                     case ItemType.CarrotSpawner:
                     case ItemType.Chicken:
                     case ItemType.MrBiscuits:
-                        selectedInteractableTransform.parent.SendMessage("OnFedItem", selectedInteractable, SendMessageOptions.DontRequireReceiver);
+                    case ItemType.MrBiscuits2:
+                    case ItemType.MrBiscuits3:
+                    case ItemType.MrBiscuits4:
+                    case ItemType.BatSpawner:
+                        if (!FeedRules.CanBeFed(selectedInteractable, selectedItem))
+                        {
+                            break;
+                        }
+                        selectedInteractableTransform.parent.SendMessage("OnFedItem", selectedItem, SendMessageOptions.DontRequireReceiver);
                         SetSelectedItem(ItemType.None);
                         break;
                 }
