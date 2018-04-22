@@ -8,6 +8,7 @@ public class InventorySlot : MonoBehaviour {
 
     [Header("Config")]
     public Vector3 propOffset;
+    public Animator animator;
 
     [Header("Water, Grass, Chicken, Egg, Carrot")]
     public List<GameObject> meshes;
@@ -81,11 +82,68 @@ public class InventorySlot : MonoBehaviour {
                 break;
         }
         selectedInteractableTransform = t;
+        if (selectedItem == ItemType.None)
+        {
+            switch (selectedInteractable)
+            {
+                case ItemType.Carrot:
+                case ItemType.Chicken:
+                case ItemType.Egg:
+                case ItemType.Grass:
+                case ItemType.Water:
+                    Utility.SendMessageToChildren(
+                        transform.parent,
+                        "SetInteraction",
+                        InteractionCanvasController.Interaction.Take,
+                        SendMessageOptions.DontRequireReceiver);
+                    break;
+                default:
+                    Utility.SendMessageToChildren(
+                        transform.parent,
+                        "SetInteraction",
+                        InteractionCanvasController.Interaction.None,
+                        SendMessageOptions.DontRequireReceiver);
+                    break;
+            }
+        }
+        else
+        {
+            if (FeedRules.CanBeFed(selectedInteractable, selectedItem))
+            {
+                Utility.SendMessageToChildren(
+                    transform.parent,
+                    "SetInteraction",
+                    InteractionCanvasController.Interaction.Feed,
+                    SendMessageOptions.DontRequireReceiver);
+            } else
+            {
+                Utility.SendMessageToChildren(
+                    transform.parent,
+                    "SetInteraction",
+                    InteractionCanvasController.Interaction.None,
+                    SendMessageOptions.DontRequireReceiver);
+            }
+        }
     }
     void OnSelectedInteractableRemoved()
     {
         selectedInteractable = ItemType.None;
         selectedInteractableTransform = null;
+        if (selectedItem == ItemType.None)
+        {
+            Utility.SendMessageToChildren(
+                transform.parent,
+                "SetInteraction",
+                InteractionCanvasController.Interaction.None,
+                SendMessageOptions.DontRequireReceiver);
+        } else
+        {
+            Utility.SendMessageToChildren(
+                transform.parent,
+                "SetInteraction",
+                InteractionCanvasController.Interaction.Eat,
+                SendMessageOptions.DontRequireReceiver);
+        }
     }
     void Update () {
 		if (Input.GetButtonDown("Interact"))
@@ -99,6 +157,11 @@ public class InventorySlot : MonoBehaviour {
                         break;
                     case ItemType.Water:
                         SetSelectedItem(selectedInteractable);
+                        Utility.SendMessageToChildren(
+                            transform.parent,
+                            "SetInteraction",
+                            InteractionCanvasController.Interaction.None,
+                            SendMessageOptions.DontRequireReceiver);
                         break;
                     case ItemType.Grass:
                     case ItemType.Egg:
@@ -106,6 +169,11 @@ public class InventorySlot : MonoBehaviour {
                     case ItemType.Chicken:
                         SetSelectedItem(selectedInteractable);
                         Utility.PhysicalDestroy(selectedInteractableTransform.parent.gameObject);
+                        Utility.SendMessageToChildren(
+                            transform.parent,
+                            "SetInteraction",
+                            InteractionCanvasController.Interaction.None,
+                            SendMessageOptions.DontRequireReceiver);
                         break;
                 }
             }
@@ -120,6 +188,11 @@ public class InventorySlot : MonoBehaviour {
                         SetSelectedItem(ItemType.None);
                         fedSelf = true;
                         TryMovingPhase();
+                        Utility.SendMessageToChildren(
+                            transform.parent,
+                            "SetInteraction",
+                            InteractionCanvasController.Interaction.None,
+                            SendMessageOptions.DontRequireReceiver);
                         break;
                     case ItemType.WaterSpawner:
                         break;
@@ -158,6 +231,11 @@ public class InventorySlot : MonoBehaviour {
     {
         selectedInteractableTransform.parent.SendMessage("OnFedItem", selectedItem, SendMessageOptions.DontRequireReceiver);
         SetSelectedItem(ItemType.None);
+        Utility.SendMessageToChildren(
+            transform.parent,
+            "SetInteraction",
+            InteractionCanvasController.Interaction.None,
+            SendMessageOptions.DontRequireReceiver);
     }
 
     private void SetSelectedItem(ItemType itemType)
@@ -171,6 +249,7 @@ public class InventorySlot : MonoBehaviour {
             props[(int)itemType].SetActive(true);
         }
         selectedItem = itemType;
+        animator.SetLayerWeight(1, selectedItem == ItemType.None ? 0 : 1);
     }
 
     private void TryMovingPhase()

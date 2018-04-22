@@ -43,7 +43,7 @@ public class Spawner : MonoBehaviour, IHaveCharge {
         charge = Mathf.Max(0, charge - (Time.deltaTime / decayTime));
 	}
 
-    void OnFedItem(InventorySlot.ItemType type)
+    public void OnFedItem(InventorySlot.ItemType type)
     {
         charge = 1;
         if (!continuous)

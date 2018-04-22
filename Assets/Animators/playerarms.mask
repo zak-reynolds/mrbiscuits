@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: playerarms
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Armature
+    m_Weight: 0
+  - m_Path: Armature/hip
+    m_Weight: 0
+  - m_Path: Armature/hip/hip_001
+    m_Weight: 0
+  - m_Path: Armature/hip/hip_001/hip_002
+    m_Weight: 0
+  - m_Path: Armature/hip/hip_001/hip_002/hip_003
+    m_Weight: 0
+  - m_Path: Armature/hip/hip_001/hip_002/hip_004
+    m_Weight: 1
+  - m_Path: Armature/hip/hip_001/hip_002/hip_004/hip_005
+    m_Weight: 1
+  - m_Path: Armature/hip/hip_001/hip_002/hip_009
+    m_Weight: 1
+  - m_Path: Armature/hip/hip_001/hip_002/hip_009/hip_010
+    m_Weight: 1
+  - m_Path: Armature/hip_006
+    m_Weight: 0
+  - m_Path: Armature/hip_006/hip_007
+    m_Weight: 0
+  - m_Path: Armature/hip_006/hip_007/hip_008
+    m_Weight: 0
+  - m_Path: Armature/hip_011
+    m_Weight: 0
+  - m_Path: Armature/hip_011/hip_012
+    m_Weight: 0
+  - m_Path: Armature/hip_011/hip_012/hip_013
+    m_Weight: 0
+  - m_Path: Cube
+    m_Weight: 0

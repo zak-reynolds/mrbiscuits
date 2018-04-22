@@ -31,7 +31,6 @@ public class MessageController : MonoBehaviour {
         if (interrupt && _instance.playingMessages)
         {
             _instance.messages.Clear();
-            _instance.interruptCurrentMessage = true;
         }
         _instance.messages.Enqueue(message);
         if (!_instance.playingMessages)

@@ -23,8 +23,8 @@ public class BatController : MonoBehaviour {
 
         if (target != null)
         {
-            var direction = (target.transform.position - transform.position).normalized;
-            cc.Move(direction * speed * Time.deltaTime);
+            transform.LookAt(target.transform);
+            cc.Move(transform.forward * speed * Time.deltaTime);
         }
     }
 }

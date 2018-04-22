@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
     {
         cc = GetComponent<CharacterController>();
         spawner = GetComponentInChildren<Spawner>();
+        spawner.OnFedItem(InventorySlot.ItemType.None);
     }
 
 	void FixedUpdate () {

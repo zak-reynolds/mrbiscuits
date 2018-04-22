@@ -15,14 +15,15 @@ public class SuperBiscuitsController : MonoBehaviour {
 	void Start () {
         cc = GetComponent<CharacterController>();
         target = ((GameObject)GameObject.FindGameObjectWithTag("Player")).transform;
-	}
+        StartCoroutine(FeedTimer());
+    }
 	
 	void Update ()
     {
-        if (target != null && !isFeeding)
+        if (target != null && target.transform.position.y > -100 && !isFeeding)
         {
-            var direction = (target.transform.position - transform.position).normalized;
-            cc.Move(direction * speed * Time.deltaTime);
+            transform.LookAt(target);
+            cc.Move(transform.forward * speed * Time.deltaTime);
         }
     }
 
