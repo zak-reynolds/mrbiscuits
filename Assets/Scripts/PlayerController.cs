@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour {
@@ -28,17 +29,12 @@ public class PlayerController : MonoBehaviour {
     {
         if (col.CompareTag("EscapePoint") && GameObject.FindGameObjectWithTag("MrBiscuits4") != null)
         {
-            MessageController.AddMessage("You escaped!");
-            MessageController.AddMessage("but Mr. Biscuits has been unleashed upon this world");
-            MessageController.AddMessage("-.. --- --- -- ... --- ...");
-            MessageController.AddMessage("This was an entry in the Ludum Dare 41 compo");
-            MessageController.AddMessage("By Zak Reynolds");
-            MessageController.AddMessage("Thanks for playing!");
+            GameOrchestrator.NextPhase();
+            Utility.PhysicalDestroy(gameObject);
         }
         if (col.CompareTag("MrBiscuits4"))
         {
-            MessageController.AddMessage("You have fed Mr. Biscuits the ultimate meal");
-            MessageController.AddMessage("Game over");
+            GameOrchestrator.PlayerKilled();
             Utility.PhysicalDestroy(gameObject);
         }
     }

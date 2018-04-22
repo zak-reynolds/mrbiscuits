@@ -16,7 +16,13 @@ public class InventorySlot : MonoBehaviour {
     private ItemType selectedInteractable = ItemType.None;
     private Transform selectedInteractableTransform = null;
 
-	void Start ()
+    // Game phase tracking
+    private bool fedGrass = false;
+    private bool fedCarrot = false;
+    private bool fedChicken = false;
+    private bool fedSelf = false;
+
+    void Start ()
     {
         props = new List<GameObject>(meshes.Count);
         foreach (var gob in meshes)
@@ -112,28 +118,47 @@ public class InventorySlot : MonoBehaviour {
                         // Eat
                         Utility.SendMessageToChildren(transform.parent, "OnFedItem", selectedItem, SendMessageOptions.DontRequireReceiver);
                         SetSelectedItem(ItemType.None);
+                        fedSelf = true;
+                        TryMovingPhase();
                         break;
                     case ItemType.WaterSpawner:
                         break;
                     case ItemType.GrassSpawner:
+                        fedGrass = true;
+                        TryMovingPhase();
+                        if (!FeedRules.CanBeFed(selectedInteractable, selectedItem)) break;
+                        FeedInteractable();
+                        break;
                     case ItemType.CarrotSpawner:
+                        fedCarrot = true;
+                        TryMovingPhase();
+                        if (!FeedRules.CanBeFed(selectedInteractable, selectedItem)) break;
+                        FeedInteractable();
+                        break;
                     case ItemType.Chicken:
+                        fedChicken = true;
+                        TryMovingPhase();
+                        if (!FeedRules.CanBeFed(selectedInteractable, selectedItem)) break;
+                        FeedInteractable();
+                        break;
                     case ItemType.MrBiscuits:
                     case ItemType.MrBiscuits2:
                     case ItemType.MrBiscuits3:
                     case ItemType.MrBiscuits4:
                     case ItemType.BatSpawner:
-                        if (!FeedRules.CanBeFed(selectedInteractable, selectedItem))
-                        {
-                            break;
-                        }
-                        selectedInteractableTransform.parent.SendMessage("OnFedItem", selectedItem, SendMessageOptions.DontRequireReceiver);
-                        SetSelectedItem(ItemType.None);
+                        if (!FeedRules.CanBeFed(selectedInteractable, selectedItem)) break;
+                        FeedInteractable();
                         break;
                 }
             }
         }
 	}
+
+    private void FeedInteractable()
+    {
+        selectedInteractableTransform.parent.SendMessage("OnFedItem", selectedItem, SendMessageOptions.DontRequireReceiver);
+        SetSelectedItem(ItemType.None);
+    }
 
     private void SetSelectedItem(ItemType itemType)
     {
@@ -147,4 +172,12 @@ public class InventorySlot : MonoBehaviour {
         }
         selectedItem = itemType;
     }
+
+    private void TryMovingPhase()
+    {
+        if (GameOrchestrator.Phase == GameOrchestrator.GamePhase.LearnActions && fedGrass && fedCarrot && fedChicken && fedSelf)
+        {
+            GameOrchestrator.NextPhase();
+        }
+}
 }

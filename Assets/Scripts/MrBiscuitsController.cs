@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MrBiscuitsController : MonoBehaviour {
 
-    public GameObject nextPrefab;
     public int foodToEvolve = 1;
     private int timesFed = 0;
     private int attacks = 0;
@@ -39,10 +38,14 @@ public class MrBiscuitsController : MonoBehaviour {
     void OnFedItem(InventorySlot.ItemType type)
     {
         timesFed++;
+        if (timesFed == 3 && CompareTag("MrBiscuits2"))
+        {
+
+            GameOrchestrator.NextPhase();
+        }
         if (timesFed >= foodToEvolve)
         {
-            Instantiate(nextPrefab, transform.position, Quaternion.identity);
-            Utility.PhysicalDestroy(gameObject);
+            GameOrchestrator.NextPhase();
         }
         Health = 1f;
     }
@@ -52,6 +55,7 @@ public class MrBiscuitsController : MonoBehaviour {
         Health -= amount;
         if (Health < 0)
         {
+            GameOrchestrator.MrBiscuitsKilled();
             Utility.PhysicalDestroy(gameObject);
         }
     }
@@ -69,13 +73,6 @@ public class MrBiscuitsController : MonoBehaviour {
         if (col.CompareTag("Bat"))
         {
             attacks--;
-        }
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.PageUp)) {
-            OnFedItem(InventorySlot.ItemType.None);
         }
     }
 }

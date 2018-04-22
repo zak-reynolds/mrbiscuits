@@ -11,6 +11,7 @@ public class MessageController : MonoBehaviour {
     private bool playingMessages = false;
     private Text text;
     private List<string> creepyWords;
+    private bool interruptCurrentMessage = false;
 
     void Awake()
     {
@@ -19,12 +20,19 @@ public class MessageController : MonoBehaviour {
         text = GetComponentInChildren<Text>();
         creepyWords = new List<string>
         {
-            "c'thulu", "dark", "doom", "ne'thet", "hell", "xo#8", "f02 02b", " leavenow ", "FEED IT  ", "die", "---------", "what did you say to me you little", "", "Z", "X", "T", "DQ", "I*", "f'", "nff", "huz"
+            "c'thulu", "dark", "doom", "d'oom", "doom", "ne'thet", "hell", "xo#8", "FEEDFEEDFEED", "will eat you", "f02 02b", " leavenow ", "monsters", "FEED IT  ", "die", "---------", "what did you say to me you little", "", "Z", "X", "T", "DQ", "I*", "f'", "nff", "huz"
         };
     }
 
-    public static void AddMessage(string message)
+    public static void AddMessage(string message, bool interrupt = false, bool onlyLog = false)
     {
+        MessageLogger.LogMessage(message);
+        if (onlyLog) return;
+        if (interrupt && _instance.playingMessages)
+        {
+            _instance.messages.Clear();
+            _instance.interruptCurrentMessage = true;
+        }
         _instance.messages.Enqueue(message);
         if (!_instance.playingMessages)
         {
@@ -42,12 +50,22 @@ public class MessageController : MonoBehaviour {
             var currentString = string.Empty;
             foreach (char c in currentMessage)
             {
+                if (interruptCurrentMessage)
+                {
+                    break;
+                }
                 currentString += c;
                 text.text = Random.Range(0, 3) == 0 ? InjectCreep(currentString) : currentString;
                 yield return new WaitForSeconds(Random.Range(0.05f, 0.15f));
             }
-            text.text = currentString;
-            yield return new WaitForSeconds(3f);
+            text.text = currentMessage;
+            if (interruptCurrentMessage)
+            {
+                interruptCurrentMessage = false;
+            } else
+            {
+                yield return new WaitForSeconds(2f);
+            }
             if (messages.Count == 0)
             {
                 playingMessages = false;
