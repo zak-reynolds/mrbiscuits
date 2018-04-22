@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -16,6 +17,8 @@ public class GameOrchestrator : MonoBehaviour {
     private GameObject cachedMrBiscuits3;
     public GameObject mrBiscuits4;
     private GameObject cachedMrBiscuits4;
+
+    public AudioMixerSnapshot[] snapshots;
 
     private Text goalText;
 
@@ -113,9 +116,10 @@ public class GameOrchestrator : MonoBehaviour {
                 goalText.text = @"* Feed yourself
 * feed your <color='green'>grass</color> and <color='green'>carrots</color> <color='#33f'>water</color>
 * feed your <color='#f33'>chickens</color> <color='green'>plants</color>";
-                messagePanel.anchorMin = new Vector2(1, 0.5f);
-                messagePanel.anchorMax = new Vector2(1, 0.5f);
-                messagePanel.pivot = new Vector2(1, 0.5f);
+                //messagePanel.anchorMin = new Vector2(1, 0.5f);
+                //messagePanel.anchorMax = new Vector2(1, 0.5f);
+                //messagePanel.pivot = new Vector2(1, 0.5f);
+                snapshots[0].TransitionTo(1);
                 break;
             case GamePhase.FeedWater:
                 PlayerPrefs.SetInt("level", 1);
@@ -128,6 +132,7 @@ public class GameOrchestrator : MonoBehaviour {
 * feed your <color='green'>grass</color> and <color='green'>carrots</color> <color='#33f'>water</color>
 * feed your <color='#f33'>chickens</color> <color='green'>plants</color>
 * feed mr. biscuits some <color='#33f'>water</color>";
+                snapshots[1].TransitionTo(1);
                 break;
             case GamePhase.FeedVeggies:
                 PlayerPrefs.SetInt("level", 2);
@@ -139,6 +144,7 @@ public class GameOrchestrator : MonoBehaviour {
 * feed your <color='green'>grass</color> and <color='green'>carrots</color> <color='#33f'>water</color>
 * feed your <color='#f33'>chickens</color> <color='green'>plants</color>
 * feed mr. biscuits <color='green'>plants</color>";
+                snapshots[2].TransitionTo(1);
                 break;
             case GamePhase.HelloBats:
                 PlayerPrefs.SetInt("level", 3);
@@ -150,6 +156,7 @@ public class GameOrchestrator : MonoBehaviour {
 * feed your <color='#f33'>chickens</color> <color='green'>plants</color>
 * feed mr. biscuits <color='green'>plants</color>
 * feed the <color='purple'>bat lair</color> <color='#f33'>eggs</color> or <color='#f33'>chickens</color>";
+                snapshots[3].TransitionTo(1);
                 break;
             case GamePhase.FeedMeats:
                 PlayerPrefs.SetInt("level", 4);
@@ -163,6 +170,8 @@ public class GameOrchestrator : MonoBehaviour {
 * feed your <color='#f33'>chickens</color> <color='green'>plants</color>
 * feed the <color='purple'>bat lair</color> <color='#f33'>eggs</color> or <color='#f33'>chickens</color>
 * feed mr. biscuits <color='green'>plants</color> and <color='#f33'>protein</color>";
+                snapshots[4].TransitionTo(1);
+                StartCoroutine(TransitionToMb3bSnapshot());
                 break;
             case GamePhase.Run:
                 goalIndicator.StartFlashing();
@@ -177,6 +186,7 @@ public class GameOrchestrator : MonoBehaviour {
                 messagePanel.anchorMin = new Vector2(1, 0f);
                 messagePanel.anchorMax = new Vector2(1, 0f);
                 messagePanel.pivot = new Vector2(1, 0f);
+                snapshots[6].TransitionTo(1);
                 break;
             case GamePhase.Win:
                 goalIndicator.StopFlashing();
@@ -187,7 +197,13 @@ public class GameOrchestrator : MonoBehaviour {
                 MessageController.AddMessage("This was an entry in the Ludum Dare 41 compo");
                 MessageController.AddMessage("By Zak Reynolds");
                 MessageController.AddMessage("Thanks for playing!");
+                snapshots[0].TransitionTo(5);
                 break;
         }
+    }
+    private IEnumerator TransitionToMb3bSnapshot()
+    {
+        yield return new WaitForSeconds(30);
+        if (phase == GamePhase.FeedMeats) snapshots[5].TransitionTo(30);
     }
 }

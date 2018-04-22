@@ -19,7 +19,7 @@ public class PauseMenuController : MonoBehaviour {
     private void TogglePause()
     {
         paused = !paused;
-        Time.timeScale = paused ? 0 : 1;
+        // Time.timeScale = paused ? 0 : 1;
         for (int i = 0; i < transform.childCount; ++i)
         {
             transform.GetChild(i).gameObject.SetActive(paused);

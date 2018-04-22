@@ -10,6 +10,9 @@ public class InventorySlot : MonoBehaviour {
     public Vector3 propOffset;
     public Animator animator;
 
+    [Header("Pick, Feed, Eat")]
+    public AudioClip[] clips;
+
     [Header("Water, Grass, Chicken, Egg, Carrot")]
     public List<GameObject> meshes;
     public ItemType selectedItem = ItemType.None;
@@ -22,9 +25,11 @@ public class InventorySlot : MonoBehaviour {
     private bool fedCarrot = false;
     private bool fedChicken = false;
     private bool fedSelf = false;
+    private AudioSource source;
 
     void Start ()
     {
+        source = gameObject.AddComponent<AudioSource>();
         props = new List<GameObject>(meshes.Count);
         foreach (var gob in meshes)
         {
@@ -162,6 +167,7 @@ public class InventorySlot : MonoBehaviour {
                             "SetInteraction",
                             InteractionCanvasController.Interaction.None,
                             SendMessageOptions.DontRequireReceiver);
+                        source.PlayOneShot(clips[0]);
                         break;
                     case ItemType.Grass:
                     case ItemType.Egg:
@@ -174,6 +180,7 @@ public class InventorySlot : MonoBehaviour {
                             "SetInteraction",
                             InteractionCanvasController.Interaction.None,
                             SendMessageOptions.DontRequireReceiver);
+                        source.PlayOneShot(clips[0]);
                         break;
                 }
             }
@@ -193,6 +200,8 @@ public class InventorySlot : MonoBehaviour {
                             "SetInteraction",
                             InteractionCanvasController.Interaction.None,
                             SendMessageOptions.DontRequireReceiver);
+                        ScreenShaker.Shake(0.5f, 0.1f);
+                        source.PlayOneShot(clips[2]);
                         break;
                     case ItemType.WaterSpawner:
                         break;
@@ -236,6 +245,8 @@ public class InventorySlot : MonoBehaviour {
             "SetInteraction",
             InteractionCanvasController.Interaction.None,
             SendMessageOptions.DontRequireReceiver);
+        ScreenShaker.Shake(0.25f, 0.1f);
+        source.PlayOneShot(clips[1]);
     }
 
     private void SetSelectedItem(ItemType itemType)

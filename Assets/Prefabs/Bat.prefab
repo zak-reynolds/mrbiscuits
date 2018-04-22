@@ -733,7 +733,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentSpawner: {fileID: 0}
-  speed: 0.5
+  speed: 1
 --- !u!135 &135167713455544618
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -360,7 +360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 1909787833396172, guid: 218e98ac6394ca545aff766cc802a350, type: 2}
-  spawnDistance: 2
+  spawnDistance: 0
   continuous: 0
   decayTime: 10
   spawnRate: 5
