@@ -12,6 +12,7 @@ public class MessageController : MonoBehaviour {
     private Text text;
     private List<string> creepyWords;
     private bool interruptCurrentMessage = false;
+    public GameObject messagePanel;
 
     void Awake()
     {
@@ -41,7 +42,7 @@ public class MessageController : MonoBehaviour {
 
     private IEnumerator PlayMessages()
     {
-        transform.GetChild(0).gameObject.SetActive(true);
+        messagePanel.SetActive(true);
         playingMessages = true;
         while (playingMessages)
         {
@@ -71,7 +72,7 @@ public class MessageController : MonoBehaviour {
             }
         }
         text.text = string.Empty;
-        transform.GetChild(1).gameObject.SetActive(false);
+        messagePanel.SetActive(false);
     }
 
     private string InjectCreep(string fitin)

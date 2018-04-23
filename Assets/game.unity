@@ -4704,6 +4704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f0a63b71e2166438cf8c5ea06ee62c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  messagePanel: {fileID: 1071987706}
 --- !u!114 &961593920
 MonoBehaviour:
   m_ObjectHideFlags: 0
