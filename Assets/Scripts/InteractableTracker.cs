@@ -32,7 +32,6 @@ public class InteractableTracker : MonoBehaviour {
             {
                 transform.parent.GetChild(i).SendMessage("OnSelectedInteractableChanged", selectedInteractable, SendMessageOptions.DontRequireReceiver);
             }
-            Debug.Log("OnSelectedInteractableChanged:" + selectedInteractable.parent.name);
         }
     }
 	
@@ -52,7 +51,6 @@ public class InteractableTracker : MonoBehaviour {
             {
                 transform.parent.GetChild(i).SendMessage("OnSelectedInteractableRemoved", SendMessageOptions.DontRequireReceiver);
             }
-            Debug.Log("OnSelectedInteractableRemoved");
         }
     }
 }

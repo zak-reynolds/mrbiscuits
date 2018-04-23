@@ -71,7 +71,7 @@ public class MessageController : MonoBehaviour {
             }
         }
         text.text = string.Empty;
-        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
     }
 
     private string InjectCreep(string fitin)

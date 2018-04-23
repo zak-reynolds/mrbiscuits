@@ -62,6 +62,7 @@ public class MeshFollow : MonoBehaviour {
 
     void Update()
     {
+        if (target == null) Destroy(gameObject);
         transform.position = target.position;
         velocity = (transform.position - lastPosition) / Time.deltaTime;
         var flattenedVelocity = new Vector3(velocity.x, 0, velocity.z).normalized;

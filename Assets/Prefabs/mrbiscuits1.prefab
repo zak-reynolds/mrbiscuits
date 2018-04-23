@@ -327,9 +327,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e15ee0d1b87a7f439c11936150c6760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextPrefab: {fileID: 1660619204804376, guid: dcaf6130932591945837361274c11ac5, type: 2}
   foodToEvolve: 1
   Health: 1
+  deathEffect: {fileID: 1659426493582834, guid: d1363f710ad98e148931d20f040915fc,
+    type: 2}
 --- !u!114 &114771263803137030
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour {
             GameOrchestrator.NextPhase();
             Utility.PhysicalDestroy(gameObject);
         }
-        if (col.CompareTag("MrBiscuits4"))
+        if (col.CompareTag("MrBiscuits4") && !col.transform.parent.GetComponent<SuperBiscuitsController>().isFeeding)
         {
             GameOrchestrator.PlayerKilled();
             Utility.PhysicalDestroy(gameObject);

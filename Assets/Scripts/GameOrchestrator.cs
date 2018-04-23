@@ -19,6 +19,7 @@ public class GameOrchestrator : MonoBehaviour {
     private GameObject cachedMrBiscuits4;
 
     public AudioMixerSnapshot[] snapshots;
+    public Transform[] cineTargets;
 
     private Text goalText;
 
@@ -120,6 +121,7 @@ public class GameOrchestrator : MonoBehaviour {
                 //messagePanel.anchorMax = new Vector2(1, 0.5f);
                 //messagePanel.pivot = new Vector2(1, 0.5f);
                 snapshots[0].TransitionTo(1);
+                PerspectiveShifter.ShiftToOrtho(0);
                 break;
             case GamePhase.FeedWater:
                 PlayerPrefs.SetInt("level", 1);
@@ -133,6 +135,8 @@ public class GameOrchestrator : MonoBehaviour {
 * feed your <color='#f33'>chickens</color> <color='green'>plants</color>
 * feed mr. biscuits some <color='#33f'>water</color>";
                 snapshots[1].TransitionTo(1);
+                if (!onlyLog) CinematicShot.MoveToTarget(cineTargets[0], 0.5f, 3);
+
                 break;
             case GamePhase.FeedVeggies:
                 PlayerPrefs.SetInt("level", 2);
@@ -145,6 +149,8 @@ public class GameOrchestrator : MonoBehaviour {
 * feed your <color='#f33'>chickens</color> <color='green'>plants</color>
 * feed mr. biscuits <color='green'>plants</color>";
                 snapshots[2].TransitionTo(1);
+                if (!onlyLog) CinematicShot.MoveToTarget(cineTargets[1], 0.5f, 3);
+
                 break;
             case GamePhase.HelloBats:
                 PlayerPrefs.SetInt("level", 3);
@@ -157,6 +163,8 @@ public class GameOrchestrator : MonoBehaviour {
 * feed mr. biscuits <color='green'>plants</color>
 * feed the <color='purple'>bat lair</color> <color='#f33'>eggs</color> or <color='#f33'>chickens</color>";
                 snapshots[3].TransitionTo(1);
+                if (!onlyLog) CinematicShot.MoveToTarget(cineTargets[2], 0.5f, 3);
+
                 break;
             case GamePhase.FeedMeats:
                 PlayerPrefs.SetInt("level", 4);
@@ -172,11 +180,16 @@ public class GameOrchestrator : MonoBehaviour {
 * feed mr. biscuits <color='green'>plants</color> and <color='#f33'>protein</color>";
                 snapshots[4].TransitionTo(1);
                 StartCoroutine(TransitionToMb3bSnapshot());
+                if (!onlyLog)
+                {
+                    CinematicShot.MoveToTarget(cineTargets[3], 0.5f, 3);
+                    StartCoroutine(TransitionToPerspective());
+                }
                 break;
             case GamePhase.Run:
                 goalIndicator.StartFlashing();
                 PlayerPrefs.SetInt("level", 5);
-                cachedMrBiscuits4 = Instantiate(mrBiscuits4, cachedMrBiscuits3.transform.position, Quaternion.identity);
+                cachedMrBiscuits4 = Instantiate(mrBiscuits4, cachedMrBiscuits3.transform.position, Quaternion.AngleAxis(180, Vector3.up));
                 Utility.PhysicalDestroy(cachedMrBiscuits3);
                 MessageController.AddMessage("run run run run run run run run", true);
                 MessageController.AddMessage("run run run run run run run run");
@@ -187,6 +200,11 @@ public class GameOrchestrator : MonoBehaviour {
                 messagePanel.anchorMax = new Vector2(1, 0f);
                 messagePanel.pivot = new Vector2(1, 0f);
                 snapshots[6].TransitionTo(1);
+                if (!onlyLog)
+                {
+                    CinematicShot.MoveToTarget(cineTargets[4], 0.5f, 3, false);
+                }
+                PerspectiveShifter.ShiftToPerspective(1f);
                 break;
             case GamePhase.Win:
                 goalIndicator.StopFlashing();
@@ -205,5 +223,10 @@ public class GameOrchestrator : MonoBehaviour {
     {
         yield return new WaitForSeconds(30);
         if (phase == GamePhase.FeedMeats) snapshots[5].TransitionTo(30);
+    }
+    private IEnumerator TransitionToPerspective()
+    {
+        yield return new WaitForSeconds(5);
+        PerspectiveShifter.ShiftToPerspective(10);
     }
 }

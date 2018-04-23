@@ -10,6 +10,7 @@ public class MrBiscuitsController : MonoBehaviour {
 
     public float Evolution { get { return (float)timesFed / foodToEvolve; } }
     public float Health = 1f;
+    public GameObject deathEffect;
 
     private bool active = true;
 
@@ -55,6 +56,7 @@ public class MrBiscuitsController : MonoBehaviour {
         Health -= amount;
         if (Health < 0)
         {
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
             GameOrchestrator.MrBiscuitsKilled();
             Utility.PhysicalDestroy(gameObject);
         }
